@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models
+  http://axelor.com/xml/ns/domain-models/domain-models_5.0.xsd">
+
+  <module name="partner" package="com.axelor.partner.db"></module>
+  <sequence name="sale.order.seq" initial="1" increment="1" padding="5" prefix="SO" />
+  <entity name="Partner" sequential="true" cachable="true">
+
+    <many-to-one name="title" ref="com.axelor.partner.db.Title"></many-to-one>
+    <string name="firstName" title="First Name" required="true"></string>
+    <string name="lastName"></string>
+    <date name="fixedDate" default="2000-11-22" hidden="true" title="fixed Date Of Birth"></date>
+    <string name="fullName" search="firstName,lastName">
+    <![CDATA[
+    if (firstName == null && lastName == null)
+      return null;
+    if (title == null)
+        return firstName + " " + lastName;
+    return title.getName() + " " + firstName + " " + lastName;
+    ]]>
+
+    </string>
+
+    <one-to-one name="email" ref="com.axelor.partner.db.Email" title="Email" />
+    <one-to-many name="address" ref="com.axelor.partner.db.Address" title="Address" mappedBy="partner"></one-to-many>
+    <many-to-one name="company" ref="com.axelor.partner.db.Company" title="Company" />
+    <date name="dateOfBirth" title="Date Of Birth"></date>
+    <one-to-many name="phoneList" ref="com.axelor.partner.db.Phone" title="Phone" />
+
+    <string name="code" required="true" sequence="sale.order.seq" title="Code"></string>
+    <!-- <boolean name="isFriend" /> <boolean name="isFamilyMember" /> -->
+    <many-to-many name="circleSet" ref="com.axelor.partner.db.Circle" title="Circle" />
+    <many-to-one name="image" title="Image" ref="com.axelor.meta.db.MetaFile" />
+
+    <extra-code>
+   <![CDATA[
+    final static int id=1;
+    final static String name="naveen";
+    final static String phoneNo="9587403395";
+   ]]>
+</extra-code>
+
+  </entity>
+</domain-models>

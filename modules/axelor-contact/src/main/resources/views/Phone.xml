@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+  <grid model="com.axelor.partner.db.Phone" title="Phone" name="phone-grid">
+    <field name="phone" canEdit="true" canNew="true"></field>
+  </grid>
+
+  <form model="com.axelor.partner.db.Phone" title="Phone" name="phone-form">
+    <panel title="Phone">
+      <field name="phone" title="Phone Number">
+ <!--        <viewer><![CDATA[
+      <a href="tel:{{record.phone}}">{{record.phone}}</a>
+      ]]></viewer> -->
+      </field>
+    </panel>
+  </form>
+
+</object-views>
+  

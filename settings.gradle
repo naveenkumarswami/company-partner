@@ -1,0 +1,3 @@
+rootProject.name = 'partner-comany'
+include "modules:axelor-contact" 
+include "modules:partner-contact"

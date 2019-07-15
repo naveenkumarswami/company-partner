@@ -1,0 +1,5 @@
+apply plugin: 'com.axelor.app-module'   //The gradle plugin for module project
+
+axelor { 
+    title = "Axelor :: Contact"  //The module project configuration
+}

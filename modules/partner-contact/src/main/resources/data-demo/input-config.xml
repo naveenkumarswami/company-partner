@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<xml-inputs xmlns="http://axelor.com/xml/ns/data-import"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/data-import http://axelor.com/xml/ns/data-import/data-import_5.0.xsd">
+
+
+  <!-- <input file="email.xml" root="address-book"> -->
+  <!-- <bind node="emails/email" type="com.axelor.contact.db.Email1"> -->
+  <!-- <bind node="text()" to="email" /> -->
+  <!-- </bind> -->
+  <!-- </input> -->
+
+  <!-- <input file="phone.xml" root="address-book"> <bind node="phones/phone" type="com.axelor.contact.db.Phone1"> 
+    <bind node="text()" to="phone" /> </bind> </input> -->
+
+
+  <input file="contact.xml" root="address-book">
+
+    <bind node="configs/titles/title" type="com.axelor.contact.db.Title1">
+      <bind node="@code" to="code" />
+      <bind node="text()" to="name" />
+    </bind>
+
+    <bind node="contacts/contact" type="com.axelor.contact.db.Contact1">
+      <bind node="title" to="title" search="self.name = :title" />
+
+      <!-- if @code of node title exist and not empty then bind to field notes -->
+      <!-- <bind node="title/@code" to="notes" alias="title_code" if="title_code &amp;&amp; !title_code.empty" 
+        /> NOT SURE -->
+
+      <!-- MEV_ERP_ID is sended with "context" : so here sould by null and not bind -->
+      <!-- <bind eval="MEV_ERP_ID" to="notes" if="MEV_ERP_ID"/> -->
+
+      <bind node="name[@type='F']" to="firstName" />
+      <bind node="name[@type='L']" to="lastName" />
+      <bind node="date" to="dateOfBirth"></bind>
+      <bind node="email" to="emails">
+        <bind node="e/text()" to="email" />
+      </bind>
+      <bind node="phone/p" to="phones">
+        <bind node="@type" to="phoneType"></bind>
+        <bind node="text()" to="phone"></bind>
+      </bind>
+      <!-- <bind node="email[@type='E']" to="email" /> generate email if doesn't exist <bind to="email" 
+        eval='"${firstName}.${lastName}@gmail.com".toLowerCase()' if="email == null || email.empty" /> -->
+    </bind>
+
+  </input>
+</xml-inputs>

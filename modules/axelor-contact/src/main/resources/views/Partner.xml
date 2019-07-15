@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+
+  <grid name="partner-grid" title="Partners" model="com.axelor.partner.db.Partner">
+    <toolbar>
+      <button name="exportCSV" title="Export CSV" onClick="csv.partner.export" />
+      <button name="exportST" title="Export ST" onClick="export-st-partner-record" />
+
+      <button name="importCSV" title="import CSV" onClick="import-partner-record" />
+      <button name="btnreport" title="Print" showTitle="true" onClick="print-partner-multi"
+        icon="fa-print" />
+
+    </toolbar>
+
+    <field name="code" target="Code"></field>
+    <field name="fullName" title="Full Name"></field>
+    <field name="email" title="Email"></field>
+    <field name="dateOfBirth" title="Date Of Birth"></field>
+    <field name="phoneList" title="phone"></field>
+
+
+  </grid>
+
+  <form model="com.axelor.partner.db.Partner" title="Partner" name="partner-form" cols="1"
+    onNew="action-partner-attrs-on-new,partner-task-on-New" onSave="act-hello-on-save" onLoad="check-dates-of-birth">
+    <toolbar>
+      <button name="reportButton" title="Print" showTitle="false" showIf="id" onClick="print-partner"
+        icon="fa-print" />
+      <button name="exportCSV" title="Export CSV" onClick="csv.partner.export" />
+      <button name="exportST" title="Export ST" onClick="export-partner-record" />
+      <button name="importCSV" title="import CSV" onClick="import-partner-record" />
+      <button name="exportTempl" title="Export Templ" onClick="export-templ-partner-record" />
+    </toolbar>
+    <panel title="export">
+      <button name="exportCSV" title="Export CSV" onClick="csv.partner.export" />
+      <button name="exportST" title="Export ST" onClick="export-partner-record" />
+      <button name="importCSV" title="import CSV" onClick="import-partner-record" />
+      <button name="exportTempl" title="Export Templ" onClick="export-templ-partner-record" />
+    </panel>
+    <panel title="OverView">
+      <field name="image" title="Image" widget="image"></field>
+      <field name="fullName" title="Full Name" readonly="false">
+        <editor>
+          <field name="title" title="Title" colSpan="3"></field>
+          <field name="firstName" colSpan="4" title="First Name" readonly="true"></field>
+          <field name="lastName" colSpan="5" title="Last Name"></field>
+        </editor>
+      </field>
+      <field name="fixedDate" title="fixed Date Of Birth"></field>
+      <field name="dateOfBirth" onChange="action-validate-date-of-birth">
+        <hilite color="danger" strong="true" if="$moment().diff(dateOfBirth, 'years') &lt; 18" />
+      </field>
+
+      <field name="phoneList" canNew="true" canEdit="true"></field>
+      <field name="email" domain="self.email LIKE '%gmail.com%'" form-view="email-form"
+        grid-view="email-grid" canNew="true" />
+    </panel>
+
+    <panel-tabs name="panelrelated">
+      <!-- <panel-include view="Email"/> -->
+      <panel name="partner-panel-into-panel-tab" title="Address" colSpan="12">
+        <field name="address" form-view="address-form" canSelect="true" edit-window="self"
+          colSpan="12"></field>
+
+
+        <!-- <field name="address" colSpan="12" css="address-list" canSelect="true" form-view="address-form"> -->
+        <!-- <viewer><![CDATA[ -->
+        <!-- <address> -->
+        <!-- {{record.street}} {{record.area}}<br> -->
+        <!-- {{record.city}}, {{record.state}} - {{record.zip}}<br> -->
+        <!-- {{record.country.name}} -->
+        <!-- </address> -->
+        <!-- ]]> -->
+        <!-- </viewer> -->
+        <!-- <editor x-show-titles="false"> -->
+        <!-- <field name="street" colSpan="12" title="Street"/> -->
+        <!-- <field name="area" colSpan="12" title="Area"/> -->
+        <!-- <field name="city" colSpan="4" title="City"/> -->
+        <!-- <field name="state" colSpan="4" title="State"/> -->
+        <!-- <field name="zip" colSpan="4" title="Zip"/> -->
+        <!-- <field name="country" colSpan="12" title="Country"/> -->
+        <!-- </editor> -->
+        <!-- </field> -->
+
+      </panel>
+      <panel name="company-tab" title="Company">
+        <field name="company" form-view="company-form"></field>
+      </panel>
+    </panel-tabs>
+
+    <!-- <panel-dashlet action="" /> <panel-related field="company" form-view="company-form-popup"> <field 
+      name="companyName"></field> </panel-related> -->
+    <!-- <panel-related field="address" form-view="address-form-popup"> <field name="street" /> <field 
+      name="area" /> <field name="city" /> <field name="state" /> <field name="zip" /> <field name="country" 
+      /> </panel-related> -->
+    <!-- <panel sidebar="true"> <field name="isFriend" /> <field name="isFamilyMember" /> </panel> -->
+
+    <panel sidebar="true" title="Extra">
+      <field name="circleSet" widget="TagSelect" canNew="false" />
+    </panel>
+
+  </form>
+
+  <cards name="partner-cards" model="com.axelor.partner.db.Partner" title="Contacts">
+    <field name="fullName" />
+    <field name="phone" />
+    <field name="email" />
+    <field name="address" />
+    <field name="hasImage" />
+    <template><![CDATA[
+      <div class="span4 card-image">
+        <img ng-if="hasImage" ng-src="{{$image(null, 'image')}}">
+        <img ng-if="!hasImage" src="img/user.png">
+        <strong>{{fullName}}</strong>
+      </div>
+      <div class="span8">
+        <address>
+          <strong>{{address.street}} {{address.area}}</strong><br>
+          {{address.city}}<span ng-if="address.state">, {{address.state}}</span><span ng-if="address.zip"> - {{address.zip}}</span><br>
+          {{address.country.name}}<br>
+          <abbr ng-if="phone" title="Phone">P:</abbr> {{phone.phone}}<br>
+          <abbr ng-if="email" title="Email">E:</abbr> {{email.email}}<br>
+        </address>
+      </div>
+    ]]></template>
+
+  </cards>
+
+
+  <!-- <form model="com.axelor.partner.db.Email" title="Email" name="email-form-popup"> <panel title="OverView"> 
+    <field name="email"></field> </panel> </form> -->
+
+  <!-- <form model="com.axelor.partner.db.Company" title="Company" name="company-form-popup"> <panel 
+    title="OverView"> <field name="companyName"></field> </panel> </form> -->
+
+  <action-attrs name="action-partner-attrs-on-new">
+    <attribute name="value" for="firstName" expr="Naveen" />
+    <!-- <attribute name="value" for="dateOfBirth" expr="eval: __date__" /> -->
+  </action-attrs>
+
+  <action-validate name="date-validate">
+    <!-- <notify message="Create Date is in future." if="dateOfBirth &gt; __date__" /> -->
+    <!-- <alert message="Create Date is in future." if="dateOfBirth &gt; __date__" /> -->
+    <!-- <error message="Create Date is in future." if="dateOfBirth &gt; __date__" /> -->
+    <info message="Create Date is in future." if="dateOfBirth &gt; __date__" />
+
+    <!-- <error message="Order Date is in future." if="confirmed &amp;&amp; orderDate &gt; __date__"/> -->
+  </action-validate>
+
+  <action-record name="partner-task-on-New" model="com.axelor.partner.db.Partner">
+    <!-- <field name="createDate" expr="eval: startDate ? startDate : __time__"/> -->
+    <field name="lastName" expr="Swami" />
+  </action-record>
+
+  <action-method name="act-hello-on-save">
+    <call class="com.axelor.contact.web.HelloController" method="say" />
+  </action-method>
+
+  <action-condition name="check-dates-of-birth">
+    <check field="fixedDate" />
+    <check field="dateOfBirth" />
+    <check field="dateOfBirth" if="dateOfBirth &gt; fixedDate" error="Date Of Birth must be before 2000-11-22" />
+  </action-condition>
+
+  <action-group name="action-validate-date-of-birth">
+    <action name="date-validate" />
+    <action name="check-dates-of-birth" />
+    <!-- <action name="act3" if="invoiceDate" /> -->
+  </action-group>
+
+  <action-method name="csv.partner.export">
+    <call class="com.axelor.contact.web.HelloController" method="export" />
+  </action-method>
+
+  <!-- output="{title}/${firstName}/${lastName}/${phoneList}/${circleSet}" -->
+
+  <action-export name="export-st-partner-record" download="true">
+    <export name="${firstName}.xml" template="data-export/export-partner-details.st" />
+  </action-export>
+
+  <action-export name="export-templ-partner-record" download="true">
+    <export name="${firstName}.xml" template="data-export/export-partner.templ" />
+  </action-export>
+
+  <action-method name="import-partner-record">
+
+    <call class="com.axelor.contact.web.HelloController" method="csvimporter" />
+  </action-method>
+
+  <action-report name="print-partner" design="partner.rptdesign" output="partner-${date}-${time}"
+    format="pdf">
+    <param name="partnerId" expr="eval: id" />
+  </action-report>
+
+  <action-report name="print-partner-multi" design="partnermulti.rptdesign" output="partner-${date}-${time}"
+    format="pdf">
+    <param name="partnerIds" expr="eval:_ids.join(',')" />
+
+  </action-report>
+
+  <!-- <action-script name="action.script.on.load" model="com.axelor.partner.db.Partner"> <script language="js" 
+    transactional="true"> <![CDATA[[ var hello = $json.create('hello'); hello.firstName = "Hello!!!"; var 
+    world = $json.all('world').by('firstName', '=', 'World!!!').fetchOne(); if (world == null) { world = 
+    $json.create('world'); world.firstName = "World!!!"; world = $json.save(world); // now we can't update 
+    world, as it's converted to real instance } hello.world = world; // return as response values $response.values 
+    = hello; ]]> </script> </action-script> -->
+
+</object-views>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+
+  <menuitem title="Partner details" name="menu-partner-details" icon-background="black"
+    top="true" icon="fa-print" />
+
+  <menuitem title="Partner" name="menu-partner-child" parent="menu-partner-details"
+    action="partner.all" icon-background="green" />
+
+  <action-view name="partner.all" title="Partners" model="com.axelor.partner.db.Partner"
+    home="true">
+    <view type="grid" name="partner-grid" />
+    <view type="cards" name="partner-cards" />
+    <view type="form" name="partner-form" />
+    <context name="json-enhance" expr="true" />
+  </action-view>
+
+  <menuitem name="menu-partner" parent="menu-partner-details" title="My friends"
+    action="partner.contacts" />
+
+  <action-view name="partner.contacts" title="partner-contact"
+    model="com.axelor.partner.db.Partner">
+    <view type="grid" name="partner-grid" />
+    <view type="form" name="partner-form" />
+    <domain>self.circleSet[].name = :circle_code</domain>
+    <context name="circle_code" expr="Friends" />
+  </action-view>
+
+  <menuitem name="menu-partner-friends" parent="menu-partner-details" title="My Family"
+    action="contact.family" />
+
+  <action-view name="contact.family" title="My-Family"
+    model="com.axelor.partner.db.Partner">
+    <view type="grid" name="parner-grid" />
+    <view type="form" name="parner-form" />
+    <!-- <domain>self.isFamilyMember = :_code</domain> <context name="_code" expr="true"/> -->
+    <domain>self.circleSet[].name = :circle_code</domain>
+    <context name="circle_code" expr="Family" />
+  </action-view>
+
+
+  <menuitem title="Email" name="email-partner" parent="menu-partner-details"
+    action="Email.all" />
+  <action-view name="Email.all" title="Email" model="com.axelor.partner.db.Email">
+    <view type="grid" name="email-grid" />
+    <view type="form" name="email-form" />
+  </action-view>
+
+  <menuitem title="Company" name="Company-partner" parent="menu-partner-details"
+    action="Company.all" />
+  <action-view name="Company.all" title="Company" model="com.axelor.partner.db.Company">
+    <view type="grid" name="company-grid" />
+    <view type="form" name="company-form" />
+  </action-view>
+
+  <menuitem title="Address" name="Address-partner" parent="menu-partner-details"
+    action="Address.all" />
+  <action-view name="Address.all" title="Address" model="com.axelor.partner.db.Address">
+    <view type="grid" name="address-grid" />
+    <view type="form" name="address-form" />
+  </action-view>
+
+  <menuitem title="Phone" name="partner-phone" parent="menu-partner-details"
+    action="phone.all" />
+  <action-view name="phone.all" title="Phone" model="com.axelor.partner.db.Phone">
+    <view type="grid" name="phone-grid" />
+    <view type="form" name="phone-form" />
+
+  </action-view>
+
+  <menuitem title="Views" name="menu-kanban" parent="menu-partner-details"/>
+    
+    <menuitem title="kanban" name="child-kanban" parent="menu-kanban"  action="kanban.view" />
+
+  <action-view name="kanban.view" title="Kanban View"
+    model="com.axelor.partner.db.Kanban">
+    <view type="kanban" name="kanban-kanban" />
+    <view type="grid" name="kanban-grid" />
+    <view type="form" name="kanban-form" />
+  </action-view>
+    
+  <menuitem name="menu-tasks-tree" parent="menu-kanban"
+    title="All (tree)"
+    action="project.tasks.tree"/>
+
+  <action-view name="project.tasks.tree" title="Projects">
+    <view type="tree" name="project-task-tree"/>
+  </action-view>
+
+
+</object-views>

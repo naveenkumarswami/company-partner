@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<csv-inputs xmlns="http://axelor.com/xml/ns/data-import"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/data-import http://axelor.com/xml/ns/data-import/data-import_5.0.xsd">
+
+  <adapter name="LocalDate" type="com.axelor.data.adapter.JavaTimeAdapter">
+ <option name="type" value="LocalDate"/>
+    <option name="format" value="dd/MM/yyyy"/>
+  </adapter>
+
+
+  <input file="company.csv" type="com.axelor.partner.db.Company">
+    <bind to="companyName" column="companyName"></bind>  <!-- if field name different from csv column name then it used example '<filed name="firstName" /> but 
+      in csv file name (naveen,hemu)' then used bind bind to="name" column = "firstName" -->
+  </input>
+
+  <input file="Email.csv" type="com.axelor.partner.db.Email"></input>
+  <input file="Circle.csv" type="com.axelor.partner.db.Circle" separator="\t">
+  </input>
+  <input file="Title.csv" type="com.axelor.partner.db.Title" search="self.code= :code"></input>
+  <input file="Phone.csv" type="com.axelor.partner.db.Phone"></input>
+
+  <!-- <input file="Partner.csv" type="com.axelor.partner.db.Partner" call="com.axelor.contact.web.HelloController:updateOrder"> -->
+  <input file="Partner.csv" type="com.axelor.partner.db.Partner"
+    call="com.axelor.contact.web.HelloController:updateOrder">
+
+    <bind to="firstName" column="firstName" />
+    <bind to="lastName" column="lastName" />
+    <bind to="email" if-empty="true" column="email.email" 
+      eval='"${firstName}.${lastName}@gmail.com".toLowerCase()' />
+    <!-- <bind to="lastName" column="lastName" if-empty="true" eval="&quot;${firstName}@gmail.com&quot;" 
+      /> -->
+
+    <bind to="circleSet" column="circles" search="self.code in :circles"
+      eval="circles.split('\\|') as List" />
+
+
+       <bind to="phoneList" column="phones" search="self.phone in :phones"
+        eval="phones.split('\\|') as List" /> 
+        
+        <bind to="dateOfBirth" column="dateOfBirth" adapter="LocalDate"></bind>
+
+
+<!--     <bind to="dateOfBirth" if-empty="true" column="dateOfBirth"  eval="java.time.LocalDate.now()" /> -->
+
+  <!-- <bind column="phone" to="phone" eval="phone.split('\\|') as List" /> <bind to="phone"> <bind column="phone" 
+    to="phone" eval="call: com.axelor.contact.service.HelloServiceImpl:importPhone(phone)" /> </bind> -->
+  </input>
+
+
+</csv-inputs>

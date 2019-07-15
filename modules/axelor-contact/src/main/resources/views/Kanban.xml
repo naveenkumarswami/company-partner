@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+
+  <selection name="kanban.task.state.selection">
+    <option value="todo">To-do</option>
+    <option value="progress">In progress</option>
+    <option value="complete">Completed</option>
+  </selection>
+
+  <grid name="kanban-grid" title="Project Task" model="com.axelor.partner.db.Kanban">
+    <field name="name" />
+    <field name="state" />
+    <field name="priority"></field>
+  </grid>
+
+  <form name="kanban-form" title="Project Task" model="com.axelor.partner.db.Kanban"
+    onNew="kanban.task.on.new">
+    <panel title="Overview">
+      <field name="name" />
+      <field name="state" />
+      <field name="priority"></field>
+
+    </panel>
+  </form>
+
+  <kanban name="kanban-kanban" title="Project Tasks" model="com.axelor.partner.db.Kanban"
+    columnBy="state" sequenceBy="priority" onNew="kanban.task.kanban.on.new" limit="10" draggable="true">
+    <field name="name" />
+    <field name="state"/>
+    <template><![CDATA[
+    <h4>{{name}}</h4>
+    <img ng-if="user" ng-src="{{$image('user', 'image')}}">
+    ]]></template>
+  </kanban>
+
+
+  <action-record name="kanban.task.kanban.on.new" model="com.axelor.partner.db.Kanban">
+    <field name="name" expr="#{_value}" />
+    <field name="priority" expr="0" />
+  </action-record>
+
+</object-views>

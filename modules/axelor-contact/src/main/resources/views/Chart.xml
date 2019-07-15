@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+
+  <chart name="partner-state" title="Partner state">
+    <dataset type="jpql">
+    <![CDATA[
+     select count(self.id) as partnerTotal , addr.state as state from Partner as self 
+     left join Address as addr on addr.partner = self.id group by state
+    ]]>
+    </dataset>
+    <category key="state" type="text"/>
+    <series key="partnerTotal" type="bar"/>
+  </chart>
+  
+    <chart name="partner-state-pie" title="Partner state">
+    <dataset type="jpql">
+    <![CDATA[
+         select count(self.id) as partnerTotal , addr.state as state from Partner as self 
+     left join Address as addr on addr.partner = self.id group by state
+    ]]>
+    </dataset>
+    <category key="state" type="text" title="state"/>
+    <series key="partnerTotal" groupBy="partnerTotal" type="pie" title="total partner"/>
+  </chart>
+</object-views>

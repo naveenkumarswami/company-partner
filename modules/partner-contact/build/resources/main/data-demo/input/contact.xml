@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
+<address-book>
+
+  <configs>
+    <titles>
+      <title code="mr">Mr.</title>
+      <title code="mrs">Mrs.</title>
+      <title code="miss">Miss</title>
+
+
+    </titles>
+
+    <country code="FR">France</country>
+    <country code="IN">Indie</country>
+  </configs>
+
+  <contacts>
+    <contact>
+      <title code="mr">Mr.</title>
+      <name type="F">Naveen</name>
+      <name type="L">Swami</name>
+      <date>2015-05-09</date>
+      <email>
+        <e>naveen@gmail.com</e>
+      </email>
+      <phone>
+        <p type="Office">9587403995</p>
+      </phone>
+    </contact>
+    <contact>
+      <title>Mr.</title>
+      <name type="F">Mukul</name>
+      <name type="L">Shekhawat</name>
+      <phone>
+        <p type="Home">123456789</p>
+        <p type="Office">789456123</p>
+      </phone>
+    </contact>
+    <contact>
+      <title>Mr.</title>
+      <name type="F">Naveen Kumar</name>
+      <name type="L">Swami</name>
+      <email>
+        <e>naveen1@gmail.com</e>
+      </email>
+      <my>
+        <address-list>
+          <address zip="1234">
+            <line>My</line>
+            <line2>Home</line2>
+            <city country="IN">Jaipur</city>
+          </address>
+
+          <address zip="1245">
+            <line>My</line>
+            <line2>Office</line2>
+            <city country="IN">Surat</city>
+          </address>
+        </address-list>
+
+      </my>
+    </contact>
+  </contacts>
+</address-book>
